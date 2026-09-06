@@ -7,7 +7,7 @@ class NeuralNetwork:
     def __init__(self, layers_neuroncount_list): 
         self.network = [] # Network list holds layer classes for each layer of the network
         # Create the first layer, as its special only having one input for intensity of each pixel
-        last_count = 784 # first hidden layer will take all the pixel intensitys as an input (784 of them) 
+        last_count = 2 # first hidden layer will take all the pixel intensitys as an input (784 of them) 
         for count in layers_neuroncount_list: 
             self.network.append(layer.Layer(count, last_count))
             last_count = count
@@ -29,7 +29,14 @@ class NeuralNetwork:
         return "\n".join(lines)
 
     def forward(self, input): # Do one forward propogation of the network
-        print("Hello")
+        for layer_count in range(len(self.network)): # Keep count of which layer you are on 
+            current_layer = self.network[layer_count]
+            if layer_count == 0: # Compute forward with image pixels if its the first layer 
+                current_layer.layer_forward(input)
+                continue 
+            current_layer.layer_forward(self.network[layer_count-1].forward) # Give input as the last layers forward activations 
+                
+
 
 
 if __name__ == "__main__": # Run this testing code when layer file called directly 
