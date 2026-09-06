@@ -6,7 +6,14 @@ class Layer:
         self.neurons = []
         # Create the layer of neurons with random weights and biases 
         for i in range(neuron_count): 
-            self.neurons.append(sigmoidNeuron.sigmoidNeuron(num_inputs))
+            self.neurons.append(sigmoidNeuron.SigmoidNeuron(num_inputs))
+
+    def __str__(self):
+        parts = []
+        for neuron in self.neurons:
+            value = neuron.activation if neuron.activation is not None else 0
+            parts.append(f"({float(value):.2f})")
+        return " ".join(parts)
 
   
 def softmax(layer): # Use softmax to calculate the probability of each neuron as being the most likely correct answer

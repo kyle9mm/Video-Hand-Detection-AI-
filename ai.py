@@ -1,8 +1,12 @@
 import numpy as np
-import sigmoid_neuron.py
-import layer.py
+import sigmoidNeuron
+import layer
+import neuralNetwork
 
-def input_layer_count = 728
-def hidden_layer1_count = 16
-def hidden_layer2_count = 16
-def output_layer_count = 10
+HIDDEN_LAYER1_COUNT =  16
+HIDDEN_LAYER2_COUNT = 16
+OUTPUT_LAYER_COUNT = 10
+
+myNeuralNetwork = neuralNetwork.NeuralNetwork([HIDDEN_LAYER1_COUNT, HIDDEN_LAYER2_COUNT, OUTPUT_LAYER_COUNT])
+
+print(myNeuralNetwork)
