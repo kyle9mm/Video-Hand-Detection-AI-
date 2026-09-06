@@ -7,11 +7,14 @@ class sigmoidNeuron: # Class for creating an instance of sigmoid neuron
         self.weights = np.random.rand(1, num_inputs) # Create an array of randoms numbers between 0 - 1 for each weight of length number of inputs
         self.bias = random.random() # Create a random number for bias between 0 and 1
 
+    def __str__(self):
+        return f"Neuron: Weights={self.weights}, Bias={self.bias}"
+
     def forwardActivation(self, inputs): # Calculate value of this neuron (How active it is), self - instance of sigmoid class, inputs - np array of input values into the neuron
         print("Hello, getting the output for you")
         z = np.dot(self.weights, inputs) 
         return (1/(1+np.exp(-z))) # Calculate the sigmoid value of the neuron which is its activation
-
+    
  
 if __name__ == "__main__": # Run this testing code when sigmoid neuron file called directly 
     print("Hello, this is the direct file you are running from")
