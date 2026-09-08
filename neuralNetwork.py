@@ -7,7 +7,7 @@ class NeuralNetwork:
     def __init__(self, layers_neuroncount_list): 
         self.network = [] # Network list holds layer classes for each layer of the network
         # Create the first layer, as its special only having one input for intensity of each pixel
-        last_count = 2 # first hidden layer will take all the pixel intensitys as an input (784 of them) 
+        last_count = 784 # first hidden layer will take all the pixel intensitys as an input (784 of them) 
         for count in layers_neuroncount_list: 
             self.network.append(layer.Layer(count, last_count))
             last_count = count
