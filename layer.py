@@ -3,29 +3,32 @@ import sigmoidNeuron
 
 class Layer:
     def __init__(self, neuron_count, num_inputs):
-        self.neurons = []
+        #self.neurons = []
+        self.weights_matrix = []
+        self.bias_matrix = []
         self.z = []
         self.forward = []
         # Create the layer of neurons with random weights and biases 
         for i in range(neuron_count): 
-            self.neurons.append(sigmoidNeuron.SigmoidNeuron(num_inputs))
+            neuron = sigmoidNeuron.SigmoidNeuron(num_inputs)
+            #self.neurons.append(sigmoidNeuron.SigmoidNeuron(num_inputs))
+            self.weights_matrix.append(neuron.weights)
+            self.bias_matrix.append(neuron.bias)
 
     def __str__(self):
         parts = []
-        for i in range(len(self.neurons)):
-            value = self.forward[i] if i < len(self.forward) else 0
+        for i in range(len(self.weights_matrix)):
+            value = self.forward[i] if len(self.forward) > 0 else 0
             parts.append(f"({float(value):.2f})")
         return " ".join(parts)
     
     def layer_forward(self, inputs): # Calculate value of this neuron (How active it is), self - instance of sigmoid class, inputs - np array of input values into the neuron
         self.z = []
-        self.layer = []
+        self.forward = []
         print("Hello, getting the output for you")
         # Calculate all the z values and the activation values 
-        for neuron in self.neurons:
-            z_value = np.dot(neuron.weights, inputs)
-            self.z.append(z_value)
-            self.forward.append(1 / (1 + np.exp(-z_value))) # Calculate the sigmoid value of the neuron which is its activation
+        self.z = np.dot(np.array(self.weights_matrix), inputs) + np.array(self.bias_matrix)
+        self.forward = 1 / (1 + np.exp(-self.z))
 
 
   
@@ -35,10 +38,10 @@ def softmax(layer): # Use softmax to calculate the probability of each neuron as
     exp_values = np.exp(layer.z) 
     total = sum(exp_values)
     # Go through each zeta value for each neuron and calculate its probability
-    for z in layer.z: 
-        probabilitys.append(np.exp(z)/total)
-        print("Probability: ", np.exp(z)/total)
-
+    probabilitys = layer.z/total 
+    for p in probabilitys: 
+        print("Probability: ", p)
+    return probabilitys
 
 if __name__ == "__main__": # Run this testing code when layer file called directly 
     print("Hello, this is the direct file you are running from")
