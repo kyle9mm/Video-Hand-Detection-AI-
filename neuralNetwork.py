@@ -52,8 +52,37 @@ class NeuralNetwork:
         last_layer = self.network[-1]
         return (1/last_layer.neuron_count)*np.square(target_matrix - last_layer.forward)
 
-    def train(self): # Trains the network on input image performing back propogation
+    def train(self, input_data, target, training_rate):
         print("Training")
+        target_matrix_result = self.target_matrix(target)
+
+        next_layer = None
+        next_error = None
+
+        for i in range(len(self.network) - 1, -1, -1):
+            current_layer = self.network[i]
+
+            # Determine this layer's error
+            if i == len(self.network) - 1:
+                error = current_layer.output_error(target_matrix_result)
+            else:
+                error = current_layer.hidden_layer_error(next_layer, next_error)
+
+            # Determine what fed into this layer
+            if i == 0:
+                activation_inputs = input_data
+            else:
+                activation_inputs = self.network[i - 1].forward
+
+            # Get gradients and update
+            weight_gradient, bias_gradient = current_layer.layer_gradient(error, activation_inputs)
+            current_layer.update_layer(bias_gradient, weight_gradient, training_rate)
+
+            # Save this layer + its error for the next (earlier) iteration
+            next_layer = current_layer
+            next_error = error
+
+
 
 if __name__ == "__main__": # Run this testing code when layer file called directly 
     print("Hello, this is the direct file you are running from")
