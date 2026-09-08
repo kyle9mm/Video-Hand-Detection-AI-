@@ -4,6 +4,7 @@ import sigmoidNeuron
 class Layer:
     def __init__(self, neuron_count, num_inputs):
         #self.neurons = []
+        self.neuron_count = neuron_count
         self.weights_matrix = []
         self.bias_matrix = []
         self.z = []
@@ -30,6 +31,14 @@ class Layer:
         self.z = np.dot(np.array(self.weights_matrix), inputs) + np.array(self.bias_matrix)
         self.forward = 1 / (1 + np.exp(-self.z))
 
+    def error(self, target_matrix): 
+        return (self.forward - target_matrix) * (self.forward * (1 - self.forward))
+    
+    def layer_gradient(self, error, inputs): 
+        bias_gradient = error
+        weight_gradient = np.outer(error, inputs) # Activations of last layer TIMES Error 
+        return weight_gradient, bias_gradient 
+    
 
   
 def softmax(layer): # Use softmax to calculate the probability of each neuron as being the most likely correct answer
@@ -38,10 +47,15 @@ def softmax(layer): # Use softmax to calculate the probability of each neuron as
     exp_values = np.exp(layer.z) 
     total = sum(exp_values)
     # Go through each zeta value for each neuron and calculate its probability
-    probabilitys = layer.z/total 
-    for p in probabilitys: 
-        print("Probability: ", p)
+    probabilitys = exp_values/total 
+    #for p in probabilitys: 
+    #    print("Probability: ", p)
     return probabilitys
+
+    
+
+
+
 
 if __name__ == "__main__": # Run this testing code when layer file called directly 
     print("Hello, this is the direct file you are running from")

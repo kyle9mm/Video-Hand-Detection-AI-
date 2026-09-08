@@ -35,9 +35,25 @@ class NeuralNetwork:
                 current_layer.layer_forward(input)
                 continue 
             current_layer.layer_forward(self.network[layer_count-1].forward) # Give input as the last layers forward activations 
-                
+    
+    def target_matrix(self, target): 
+        target = int(target)  # ensure it's an integer for comparison
+        matrix = []
+        for i in range(10):
+            if i == target:
+                matrix.append(1)
+            else:
+                matrix.append(0)
+        return matrix
 
+    def cost(self, target): 
+        print("computing cost")
+        target_matrix = self.target_matrix(target) 
+        last_layer = self.network[-1]
+        return (1/last_layer.neuron_count)*np.square(target_matrix - last_layer.forward)
 
+    def train(self): # Trains the network on input image performing back propogation
+        print("Training")
 
 if __name__ == "__main__": # Run this testing code when layer file called directly 
     print("Hello, this is the direct file you are running from")
