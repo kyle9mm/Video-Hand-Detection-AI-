@@ -53,7 +53,7 @@ class NeuralNetwork:
         return (1/last_layer.neuron_count)*np.square(target_matrix - last_layer.forward)
 
     def train(self, input_data, target, training_rate):
-        print("Training")
+        self.forward(input_data)
         target_matrix_result = self.target_matrix(target)
 
         next_layer = None
@@ -82,10 +82,68 @@ class NeuralNetwork:
             next_layer = current_layer
             next_error = error
 
+    def prediction(self, image): 
+        self.forward(image)
+        output = self.network[-1]
+        predictions = layer.softmax(output)
+        guess = None
+        current_guess_probability = 0 
+        # Loop through all the probabilitys and find the most likely one and set the number to guess
+        for i in range(10): 
+            if (predictions[i] > current_guess_probability): 
+                guess = i 
+                current_guess_probability = predictions[i]
+        return guess
+    
+    def save(self, filepath):
+        save_dict = {}
+        for i, l in enumerate(self.network):
+            save_dict[f"layer{i}_weights"] = l.weights_matrix
+            save_dict[f"layer{i}_bias"] = l.bias_matrix
+        np.savez(filepath, **save_dict)
+        print(f"Model saved to {filepath}")
+
+    def load(self, filepath):
+        data = np.load(filepath)
+        for i, l in enumerate(self.network):
+            l.weights_matrix = data[f"layer{i}_weights"]
+            l.bias_matrix = data[f"layer{i}_bias"]
+        print(f"Model loaded from {filepath}")
+
+def accuracy(self, start_index, num_images, mnist_data, mnist_target):
+    correct = 0
+    for i in range(start_index, start_index + num_images):
+        test_image = np.array(mnist_data.iloc[i]) / 255
+        actual = int(mnist_target[i])
+        predicted = self.prediction(test_image)
+        if predicted == actual:
+            correct += 1
+    return (correct / num_images) * 100
+
 
 
 if __name__ == "__main__": # Run this testing code when layer file called directly 
     print("Hello, this is the direct file you are running from")
-    
+    # Run a training test with one hidden layer and one output layer both of 2 neurons and a input
+    # of size 2 
+    test_net = NeuralNetwork([2, 2])
+    test_net.network[0].weights_matrix = np.array([[0.1, 0.2], [0.3, 0.4]])
+    test_net.network[0].bias_matrix = np.array([0.1, 0.1])
+
+    test_net.network[1].weights_matrix = np.array([[0.5, 0.6], [0.7, 0.8]])
+    test_net.network[1].bias_matrix = np.array([0.1, 0.1])
+    test_input = np.array([1.0, 0.0])
+    test_net.forward(test_input)
+    #print(test_net)
+
+    #test_net.train(test_input, 0, 0.1)  # pretend the correct label is "0"
+
+    #print(test_net)
+    print("Cost Before: ", test_net.cost(0))
+    print("Before:", test_net.network[1].weights_matrix)
+    test_net.train(test_input, 0, 0.1)
+    test_net.forward(test_input)
+    print("Cost After: ", test_net.cost(0))
+    print("After:", test_net.network[1].weights_matrix)
     pass
  

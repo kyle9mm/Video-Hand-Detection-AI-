@@ -15,8 +15,13 @@ first_image = first_image/255 # Normalise first image
 
 test = neuralNetwork.NeuralNetwork([10, 10])
 print(test)
-
-test.forward(first_image) 
+test.train(first_image, first_target, 0.1) 
+print(test)
+print("TARGET", first_target)
+#test.train(first_image, first_target, 0.1) 
+#test.train(first_image, first_target, 0.1) 
+#test.train(first_image, first_target, 0.1) 
+#test.train(first_image, first_target, 0.1) 
 print(test)
 print(test.cost(first_target))
 print("Probabilitys: ", layer.softmax(test.network[1]))

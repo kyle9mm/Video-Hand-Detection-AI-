@@ -26,7 +26,6 @@ class Layer:
     def layer_forward(self, inputs): # Calculate value of this neuron (How active it is), self - instance of sigmoid class, inputs - np array of input values into the neuron
         self.z = []
         self.forward = []
-        print("Hello, getting the output for you")
         # Calculate all the z values and the activation values 
         self.z = np.dot(np.array(self.weights_matrix), inputs) + np.array(self.bias_matrix)
         self.forward = 1 / (1 + np.exp(-self.z))
@@ -44,14 +43,14 @@ class Layer:
         weight_gradient = np.outer(error, inputs) # Activations of last layer TIMES Error 
         return weight_gradient, bias_gradient 
 
-    def upadate_layer(self, bias_gradient, weight_gradient, training_rate): 
+    def update_layer(self, bias_gradient, weight_gradient, training_rate): 
         self.bias_matrix -= bias_gradient * training_rate
         self.weights_matrix -= weight_gradient * training_rate
 
-def softmax(layer): # Use softmax to calculate the probability of each neuron as being the most likely correct answer
+def softmax(self): # Use softmax to calculate the probability of each neuron as being the most likely correct answer
     probabilitys = []
     # Calculate sum of all exponentials to the power of zeta 
-    exp_values = np.exp(layer.z) 
+    exp_values = np.exp(self.z) 
     total = sum(exp_values)
     # Go through each zeta value for each neuron and calculate its probability
     probabilitys = exp_values/total 
