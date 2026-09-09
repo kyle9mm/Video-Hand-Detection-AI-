@@ -10,11 +10,3 @@ class SigmoidNeuron: # Class for creating an instance of sigmoid neuron
     def __str__(self):
         return f"Neuron: Weights={self.weights}, Bias={self.bias}"
 
- 
-if __name__ == "__main__": # Run this testing code when sigmoid neuron file called directly 
-    print("Hello, this is the direct file you are running from")
-    neuron = SigmoidNeuron(5) 
-    print("The random weights are ", neuron.weights)
-    print("The Bias is ", neuron.bias)
-    pass
- 

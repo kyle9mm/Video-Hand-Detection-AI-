@@ -36,7 +36,7 @@ class NeuralNetwork:
                 continue 
             current_layer.layer_forward(self.network[layer_count-1].forward) # Give input as the last layers forward activations 
     
-    def target_matrix(self, target): 
+    def target_matrix(self, target): # takes a target number e.g 5 andmakes it into a array of 0's and the correct number e.g [0 0 0 0 0 5 0 0 0 0]
         target = int(target)  # ensure it's an integer for comparison
         matrix = []
         for i in range(10):
@@ -46,14 +46,14 @@ class NeuralNetwork:
                 matrix.append(0)
         return matrix
 
-    def cost(self, target): 
+    def cost(self, target): # Get the cost function of the network using , which is how bad our current prediction is 
         print("computing cost")
         target_matrix = self.target_matrix(target) 
         last_layer = self.network[-1]
         return (1/last_layer.neuron_count)*np.square(target_matrix - last_layer.forward)
 
-    def train(self, input_data, target, training_rate):
-        self.forward(input_data)
+    def train(self, input_data, target, training_rate): # Trains model by propogating forward with image, computing error,
+        self.forward(input_data)#                         the gradients and then updating weights and biases to decrease cost
         target_matrix_result = self.target_matrix(target)
 
         next_layer = None
@@ -82,7 +82,7 @@ class NeuralNetwork:
             next_layer = current_layer
             next_error = error
 
-    def prediction(self, image): 
+    def prediction(self, image): # Give the predicted number on a input image
         self.forward(image)
         output = self.network[-1]
         predictions = layer.softmax(output)
@@ -110,7 +110,7 @@ class NeuralNetwork:
             l.bias_matrix = data[f"layer{i}_bias"]
         print(f"Model loaded from {filepath}")
 
-def accuracy(self, start_index, num_images, mnist_data, mnist_target):
+def accuracy(self, start_index, num_images, mnist_data, mnist_target): # Runs model through MNIST Data base and gives accuracy of how many images cassified correct. 
     correct = 0
     for i in range(start_index, start_index + num_images):
         test_image = np.array(mnist_data.iloc[i]) / 255
@@ -121,29 +121,3 @@ def accuracy(self, start_index, num_images, mnist_data, mnist_target):
     return (correct / num_images) * 100
 
 
-
-if __name__ == "__main__": # Run this testing code when layer file called directly 
-    print("Hello, this is the direct file you are running from")
-    # Run a training test with one hidden layer and one output layer both of 2 neurons and a input
-    # of size 2 
-    test_net = NeuralNetwork([2, 2])
-    test_net.network[0].weights_matrix = np.array([[0.1, 0.2], [0.3, 0.4]])
-    test_net.network[0].bias_matrix = np.array([0.1, 0.1])
-
-    test_net.network[1].weights_matrix = np.array([[0.5, 0.6], [0.7, 0.8]])
-    test_net.network[1].bias_matrix = np.array([0.1, 0.1])
-    test_input = np.array([1.0, 0.0])
-    test_net.forward(test_input)
-    #print(test_net)
-
-    #test_net.train(test_input, 0, 0.1)  # pretend the correct label is "0"
-
-    #print(test_net)
-    print("Cost Before: ", test_net.cost(0))
-    print("Before:", test_net.network[1].weights_matrix)
-    test_net.train(test_input, 0, 0.1)
-    test_net.forward(test_input)
-    print("Cost After: ", test_net.cost(0))
-    print("After:", test_net.network[1].weights_matrix)
-    pass
- 

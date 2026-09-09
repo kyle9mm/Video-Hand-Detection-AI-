@@ -16,13 +16,12 @@ mnist = fetch_openml('mnist_784', version=1)
 #This is my neural network to recognise hand written numbers
 model1 = neuralNetwork.NeuralNetwork([HIDDEN_LAYER1_COUNT, HIDDEN_LAYER2_COUNT, OUTPUT_LAYER_COUNT])
 model1.load("trained_model5.npz")
-
-for z in range(7): 
-    for i in range(10000):  
-        image = np.array(mnist.data.iloc[i + 1000*z])
-        image = image/255
-        target = mnist.target[i+ 1000*z]
-        model1.train(image, target, TRAINING_RATE1)
+ 
+for i in range(10000):  
+    image = np.array(mnist.data.iloc[i])
+    image = image/255
+    target = mnist.target[i]
+    model1.train(image, target, TRAINING_RATE1)
     
 print("Testing predictions of model with LEARNING_RATE1 = ", TRAINING_RATE1)
 for i in range(60):
